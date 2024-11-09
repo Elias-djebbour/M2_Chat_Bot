@@ -1,0 +1,31 @@
+# Ignorer tous les fichiers par défaut
+*
+
+# Sauf les fichiers Python et Json
+!*.py
+!*.json
+!*.txt
+
+# Exclure également le fichier .gitignore lui-même
+!.gitignore
+
+# Exclure les répertoires (sinon, les sous-dossiers seront ignorés)
+!*/
+
+# Ignorer les fichiers compilés Python
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignorer les dossiers de configuration communs
+.env
+.venv
+.venv/
+.idea/
+.vscode/
+.DS_Store
+
+# Ignorer les fichiers de logs, caches et autres fichiers temporaires
+*.log
+*.tmp
+*.bak
