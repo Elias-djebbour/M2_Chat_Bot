@@ -9,9 +9,16 @@ app = FastAPI()
 class TextInput(BaseModel):
     text: str
 
+import logging
+
+# Configuration du logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # URLs des services externes
 EMBEDDING_SERVICE_URL = "http://127.0.0.1:8002/embed"  # URL du service de calcul d'embed
 COMPARISON_SERVICE_URL = "http://127.0.0.1:8003/find_similar_tweets"  # URL du service de comparaison
+TEXT_GENERATION_SERVICE_URL = "http://127.0.0.1:8006/generate_text"  # URL du service de génération
 
 @app.post("/AI_Response")
 async def AI_Response(input_data: TextInput):
@@ -20,9 +27,11 @@ async def AI_Response(input_data: TextInput):
     puis utilise cet embedding pour trouver les tweets les plus similaires via le service de comparaison.
     """
     # Préparer les données pour l'API d'embedding
-    payload = {"text": input_data.text}
+    payload = {"content": input_data.text}
+    
     
     try:
+        logger.info(payload)
         # 1. Appel au service d'embedding
         embedding_response = requests.post(EMBEDDING_SERVICE_URL, json=payload)
         
@@ -51,7 +60,11 @@ async def AI_Response(input_data: TextInput):
             raise HTTPException(status_code=500, detail="Aucun tweet similaire trouvé dans la réponse du service de comparaison")
 
         print(similar_tweets)
+        generation_payload = {"question": "Les droits de l'homme en France"}
+        generation_response = requests.post(TEXT_GENERATION_SERVICE_URL, json=generation_payload)
         return {"similar_tweets": similar_tweets}
+    
+        
 
     except requests.RequestException as e:
         # Gestion des erreurs de communication avec les services externes

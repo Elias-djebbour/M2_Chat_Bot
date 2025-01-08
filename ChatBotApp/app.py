@@ -1,6 +1,13 @@
 import tkinter as tk
 from tkinter import scrolledtext
 import requests
+
+import logging
+
+# Configuration du logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # Port de l'application 8005
 # URL de l'API
 API_URL = "http://127.0.0.1:8004/AI_Response"  # Assurez-vous que l'API FastAPI est lancée à cette URL
@@ -9,6 +16,8 @@ API_URL = "http://127.0.0.1:8004/AI_Response"  # Assurez-vous que l'API FastAPI 
 def get_response_from_api(user_input):
     payload = {"text": user_input}
     try:
+
+        logger.info(payload)
         # Appel API pour obtenir les tweets similaires
         response = requests.post(API_URL, json=payload)
         response.raise_for_status()  # Gérer les erreurs HTTP

@@ -1,0 +1,7 @@
+uvicorn
+requests
+numpy
+fastapi
+sentence-transformers
+watchdog
+openai
